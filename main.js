@@ -8,14 +8,18 @@ Debug UI-
 const gui = new dat.GUI({ closed: false, width: 320 })
 
 const parameters = {
-  meshMaterialColor: '#ffeded',
+  meshMaterialColor: '#d8d8ec',
   directionalLightColor: '#ffffff',
   directionalLightIntensity: 1,
 }
 
-gui.addColor(parameters, 'meshMaterialColor').onChange(() => {
-  meshMaterial.color.set(parameters.meshMaterialColor)
-})
+gui
+  .addColor(parameters, 'meshMaterialColor')
+  .name('ObjectsColor')
+  .onChange(() => {
+    meshMaterial.color.set(parameters.meshMaterialColor)
+    particlesMaterial.color.set(parameters.meshMaterialColor)
+  })
 
 // directionalLightFolder
 const directionalLightFolder = gui.addFolder('directionalLight')
@@ -80,13 +84,15 @@ sectionsMeshes.forEach((mesh, i) => {
 scene.add(mesh1, mesh2, mesh3)
 
 // Particles
-const partcilesCount = 200
+const partcilesCount = 240
 const particlesPositions = new Float32Array(partcilesCount * 3)
 
 for (let i = 0; i < partcilesCount * 3; i++) {
-  particlesPositions[i * 3] = Math.random()
-  particlesPositions[i * 3 + 1] = Math.random()
-  particlesPositions[i * 3 + 2] = Math.random()
+  particlesPositions[i * 3] = (Math.random() - 0.5) * 10
+  particlesPositions[i * 3 + 1] =
+    objectsDistance * 0.75 -
+    Math.random() * (objectsDistance * sectionsMeshes.length + 0.5)
+  particlesPositions[i * 3 + 2] = (Math.random() - 0.5) * 10
 }
 
 const particlesGeometry = new THREE.BufferGeometry()
@@ -96,8 +102,8 @@ particlesGeometry.setAttribute(
 )
 
 const particlesMaterial = new THREE.PointsMaterial({
-  color: 'ffeded',
-  size: 0.02,
+  color: parameters.meshMaterialColor,
+  size: 0.028,
   sizeAttenuation: true,
 })
 
