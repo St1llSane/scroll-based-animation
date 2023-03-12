@@ -3,9 +3,8 @@
   padding: 0;
 }
 
-html,
-body {
-  overflow: hidden;
+html {
+	background: #181e20;
 }
 
 .webgl {
@@ -16,16 +15,16 @@ body {
 }
 
 .section {
-  display: flex;
-  align-items: center;
-  height: 100vh;
-  position: relative;
   font-family: 'Cabin', sans-serif;
   color: #ffeded;
-  text-transform: uppercase;
   font-size: 7vmin;
+  text-transform: uppercase;
+  height: 100vh;
+  display: flex;
+  align-items: center;
   padding-left: 10%;
   padding-right: 10%;
+  position: relative;
 }
 
 section:nth-child(odd) {
