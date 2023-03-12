@@ -2,7 +2,9 @@ import * as THREE from 'three'
 import * as dat from 'dat.gui'
 import './style.css'
 
-// Debug
+/*
+Debug UI-
+ */
 const gui = new dat.GUI({ closed: false, width: 320 })
 
 const parameters = {
@@ -17,18 +19,22 @@ gui.addColor(parameters, 'meshMaterialColor').onChange(() => {
 
 // directionalLightFolder
 const directionalLightFolder = gui.addFolder('directionalLight')
-directionalLightFolder.open()
 directionalLightFolder
   .addColor(parameters, 'directionalLightColor')
   .onChange(() => {
     directionalLight.color.set(parameters.directionalLightColor)
   })
-directionalLightFolder.add(parameters, 'directionalLightIntensity').min(0)
-.max(1)
-.step(0.05)
-.onChange(() => {
-	directionalLight.intensity = parameters.directionalLightIntensity
-})
+directionalLightFolder
+  .add(parameters, 'directionalLightIntensity')
+  .min(0)
+  .max(1)
+  .step(0.05)
+  .onChange(() => {
+    directionalLight.intensity = parameters.directionalLightIntensity
+  })
+/* 
+-Debug UI
+ */
 
 // Canvas
 const canvas = document.querySelector('.webgl')
@@ -36,9 +42,15 @@ const canvas = document.querySelector('.webgl')
 // Scene
 const scene = new THREE.Scene()
 
+// Textures
+const textureLoader = new THREE.TextureLoader()
+const gradientTexture = textureLoader.load('./textures/gradients/gradient1.jpg')
+gradientTexture.magFilter = THREE.NearestFilter
+
 // Material
 const meshMaterial = new THREE.MeshToonMaterial({
   color: parameters.meshMaterialColor,
+  gradientMap: gradientTexture,
 })
 
 // Meshes
