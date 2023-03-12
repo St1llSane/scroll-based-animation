@@ -60,14 +60,14 @@ const mesh1 = new THREE.Mesh(
   new THREE.TorusGeometry(1, 0.4, 24, 64),
   meshMaterial
 )
-const mesh2 = new THREE.Mesh(new THREE.ConeGeometry(1, 2, 32), meshMaterial)
+const mesh2 = new THREE.Mesh(new THREE.ConeGeometry(1, 2, 44), meshMaterial)
 const mesh3 = new THREE.Mesh(
-  new THREE.TorusKnotGeometry(0.8, 0.35, 100, 16),
+  new THREE.TorusKnotGeometry(0.8, 0.35, 126, 42),
   meshMaterial
 )
 
-mesh2.position.y = objectsDistance * 1
-mesh3.position.y = objectsDistance * 2
+mesh2.position.y = -objectsDistance * 1
+mesh3.position.y = -objectsDistance * 2
 
 scene.add(mesh1, mesh2, mesh3)
 
@@ -119,6 +119,13 @@ const renderer = new THREE.WebGLRenderer({
 renderer.setSize(sizes.width, sizes.height)
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
 
+// Scroll
+let scrollY = window.scrollY
+
+window.addEventListener('scroll', () => {
+  scrollY = window.scrollY
+})
+
 // Animate
 const clock = new THREE.Clock()
 const tick = () => {
@@ -129,6 +136,9 @@ const tick = () => {
     mesh.rotation.x = elapsedTime * 0.1
     mesh.rotation.y = elapsedTime * 0.12
   })
+
+  // Animate camera
+  camera.position.y = (-scrollY / sizes.height) * objectsDistance
 
   // Render
   renderer.render(scene, camera)
