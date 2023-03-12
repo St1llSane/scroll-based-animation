@@ -54,8 +54,10 @@ const meshMaterial = new THREE.MeshToonMaterial({
 })
 
 // Meshes
+const objectsDistance = 4
+
 const mesh1 = new THREE.Mesh(
-  new THREE.TorusGeometry(1, 0.4, 16, 60),
+  new THREE.TorusGeometry(1, 0.4, 24, 64),
   meshMaterial
 )
 const mesh2 = new THREE.Mesh(new THREE.ConeGeometry(1, 2, 32), meshMaterial)
@@ -63,7 +65,13 @@ const mesh3 = new THREE.Mesh(
   new THREE.TorusKnotGeometry(0.8, 0.35, 100, 16),
   meshMaterial
 )
+
+mesh2.position.y = objectsDistance * 1
+mesh3.position.y = objectsDistance * 2
+
 scene.add(mesh1, mesh2, mesh3)
+
+const sectionsMeshes = [mesh1, mesh2, mesh3]
 
 // Lights
 const directionalLight = new THREE.DirectionalLight(
@@ -116,9 +124,14 @@ const clock = new THREE.Clock()
 const tick = () => {
   const elapsedTime = clock.getElapsedTime()
 
+  // Animate meshes
+  sectionsMeshes.forEach((mesh) => {
+    mesh.rotation.x = elapsedTime * 0.1
+    mesh.rotation.y = elapsedTime * 0.12
+  })
+
   // Render
   renderer.render(scene, camera)
-
   // Call tick again on the next frame
   window.requestAnimationFrame(tick)
 }
