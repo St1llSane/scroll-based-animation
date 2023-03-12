@@ -4,7 +4,7 @@
 }
 
 html {
-	background: #1d2025;
+  background: #1d2025;
 }
 
 .webgl {
@@ -29,4 +29,27 @@ html {
 
 section:nth-child(odd) {
   justify-content: flex-end;
+}
+
+.wrapper {
+  position: relative;
+  z-index: 10;
+	padding: 0 26px;
+}
+
+.shadow1,
+.shadow2 {
+  position: absolute;
+  top: 0;
+  left: 0;
+	margin-left: 26px;
+}
+
+.shadow1 {
+  color: #727278;
+  z-index: -1;
+}
+.shadow2 {
+  color: #39393c;
+  z-index: -2;
 }

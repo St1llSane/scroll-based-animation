@@ -192,9 +192,21 @@ const cursor = {
   y: 0,
 }
 
+const shadow1 = document.querySelectorAll('.shadow1')
+const shadow2 = document.querySelectorAll('.shadow2')
+
 window.addEventListener('mousemove', (e) => {
   cursor.x = (e.clientX / sizes.width) * 2 - 1
   cursor.y = -((e.clientY / sizes.height) * 2 - 1)
+
+  shadow1.forEach((item) => {
+    item.style.left = `${-cursor.x * 7}px`
+    item.style.top = `${cursor.y * 7}px`
+  })
+  shadow2.forEach((item) => {
+    item.style.left = `${-cursor.x * 14}px`
+    item.style.top = `${cursor.y * 14}px`
+  })
 })
 
 // Animate
