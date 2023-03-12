@@ -1,5 +1,6 @@
 import * as THREE from 'three'
 import * as dat from 'dat.gui'
+import gsap from 'gsap'
 import './style.css'
 
 /*
@@ -8,7 +9,7 @@ Debug UI-
 const gui = new dat.GUI({ closed: false, width: 320 })
 
 const parameters = {
-  meshMaterialColor: '#d8d8ec',
+  meshMaterialColor: '#e3e3f0',
   directionalLightColor: '#ffffff',
   directionalLightIntensity: 1,
 }
@@ -64,7 +65,7 @@ const mesh1 = new THREE.Mesh(
   new THREE.TorusGeometry(1, 0.4, 24, 64),
   meshMaterial
 )
-const mesh2 = new THREE.Mesh(new THREE.ConeGeometry(1, 2, 44), meshMaterial)
+const mesh2 = new THREE.Mesh(new THREE.ConeGeometry(0.9, 2.2, 48), meshMaterial)
 const mesh3 = new THREE.Mesh(
   new THREE.TorusKnotGeometry(0.8, 0.35, 126, 42),
   meshMaterial
@@ -90,7 +91,7 @@ const particlesPositions = new Float32Array(partcilesCount * 3)
 for (let i = 0; i < partcilesCount * 3; i++) {
   particlesPositions[i * 3] = (Math.random() - 0.5) * 10
   particlesPositions[i * 3 + 1] =
-    objectsDistance * 0.75 -
+    objectsDistance * 0.5 -
     Math.random() * (objectsDistance * sectionsMeshes.length + 0.5)
   particlesPositions[i * 3 + 2] = (Math.random() - 0.5) * 10
 }
@@ -165,9 +166,24 @@ renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
 
 // Scroll
 let scrollY = window.scrollY
+let currentSection = 0
 
 window.addEventListener('scroll', () => {
   scrollY = window.scrollY
+
+  const newSection = Math.round(scrollY / sizes.height)
+
+  if (newSection !== currentSection) {
+    currentSection = newSection
+
+    gsap.to(sectionsMeshes[currentSection].rotation, {
+      duration: 1.8,
+      ease: 'power1',
+      x: '+=6',
+      y: '+=3',
+      z: '+=1.5',
+    })
+  }
 })
 
 // Cursor
@@ -179,7 +195,6 @@ const cursor = {
 window.addEventListener('mousemove', (e) => {
   cursor.x = (e.clientX / sizes.width) * 2 - 1
   cursor.y = -((e.clientY / sizes.height) * 2 - 1)
-  console.log(cursor.y)
 })
 
 // Animate
@@ -193,8 +208,8 @@ const tick = () => {
 
   // Animate meshes
   sectionsMeshes.forEach((mesh) => {
-    mesh.rotation.x = elapsedTime * 0.1
-    mesh.rotation.y = elapsedTime * 0.12
+    mesh.rotation.x += deltaTime * 0.11
+    mesh.rotation.y += deltaTime * 0.13
   })
 
   // Animate camera
